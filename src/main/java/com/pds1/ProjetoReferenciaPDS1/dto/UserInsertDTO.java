@@ -22,11 +22,7 @@ public class UserInsertDTO implements Serializable{
 	
 	@NotEmpty(message = "can't be empty")
 	@Email(message = "invalid email")
-	private String email;
-	
-	@NotEmpty(message = "can't be empty")
-	@Length(min = 8,max = 20,message ="lentgh must be between 8 and 20")
-	private String phone;
+	private String email;	
 	
 	@NotEmpty(message = "can't be empty")
 	private String password;
@@ -34,20 +30,18 @@ public class UserInsertDTO implements Serializable{
 	public UserInsertDTO(){		
 	}
 
-	public UserInsertDTO(Long id, String name, String email, String phone,String password) {
+	public UserInsertDTO(Long id, String name, String email, String password) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.email = email;
-		this.phone = phone;
+		this.email = email;		
 		this.password = password;
 	}
 	
 	public UserInsertDTO(User entity){
 		this.id = entity.getId();
 		this.name = entity.getName();
-		this.email = entity.getEmail();
-		this.phone = entity.getPhone();
+		this.email = entity.getEmail();		
 		this.password = entity.getPassword();
 	}
 
@@ -74,15 +68,7 @@ public class UserInsertDTO implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}	
-	
+		
 	public String getPassword() {
 		return password;
 	}
@@ -92,7 +78,7 @@ public class UserInsertDTO implements Serializable{
 	}
 
 	public User toEntity(){
-		return new User(id, name, email, phone, password);
+		return new User(id, name, email, password);
 	}
 	
 }

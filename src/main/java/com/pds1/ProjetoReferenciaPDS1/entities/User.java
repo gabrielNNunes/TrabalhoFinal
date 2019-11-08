@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -29,30 +30,43 @@ public class User implements UserDetails {
 	private String name;
 	
 	@Column(unique = true)
-	private String email;
-	private String phone;
+	private String email;	
 	private String password;
-	
-	
-	
-	
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
 	
+	@OneToMany(mappedBy = "user")	
+	private Set<Post> posts = new HashSet<>();
+	
 	public User() {
 	}
 
-	public User(Long id, String name, String email, String phone, String password) {
+	public User(Long id, String name, String email, String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
-		this.phone = phone;
+		
 		this.password = password;
 	}
+	
+	
+
+	
+	
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void addPosts(Post post) {
+		posts.add(post);
+	}
+	
+	
+	
 
 	public Long getId() {
 		return id;
@@ -76,15 +90,7 @@ public class User implements UserDetails {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+	}	
 
 	public String getPassword() {
 		return password;

@@ -76,8 +76,7 @@ public class UserService implements UserDetailsService {
 	}
 	private void updateData(User entity, UserDTO dto) {
 		entity.setName(dto.getName());
-		entity.setEmail(dto.getEmail());
-		entity.setPhone(dto.getPhone());
+		entity.setEmail(dto.getEmail());	
 		
 	}
 	@Override

@@ -2,9 +2,7 @@ package com.pds1.ProjetoReferenciaPDS1.resourse;
 
 import java.net.URI;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,34 +15,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.pds1.ProjetoReferenciaPDS1.dto.UserDTO;
-import com.pds1.ProjetoReferenciaPDS1.dto.UserInsertDTO;
-import com.pds1.ProjetoReferenciaPDS1.services.UserService;
+import com.pds1.ProjetoReferenciaPDS1.dto.PostDTO;
+import com.pds1.ProjetoReferenciaPDS1.services.PostService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResourse {
+@RequestMapping(value = "/posts")
+public class PostResourse {
 	
 	@Autowired
-	private UserService service;
+	private PostService service;
 	
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
-	public ResponseEntity<List<UserDTO>> findAll(){
-		List<UserDTO> list = service.findAll();				
+	@PreAuthorize("hasAnyRole('ADMIN', 'MEMBER')")
+	public ResponseEntity<List<PostDTO>> findAll(){
+		List<PostDTO> list = service.findAll();				
 		return ResponseEntity.ok().body(list);
 	}
 	@GetMapping(value = "/{id}")
-	@PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
-	public ResponseEntity<UserDTO> findById(@PathVariable Long id){
-		UserDTO dto = service.findById(id);
+	public ResponseEntity<PostDTO> findById(@PathVariable Long id){
+		PostDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 	}
 	
 	@PostMapping
-	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto){
-		UserDTO newDTO = service.insert(dto);
+	@PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
+	public ResponseEntity<PostDTO> insert(@Valid @RequestBody PostDTO dto){
+		PostDTO newDTO = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(newDTO);
 	}
@@ -58,7 +54,7 @@ public class UserResourse {
 	
 	@PutMapping(value = "/{id}")
 	@PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
-	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto){
+	public ResponseEntity<PostDTO> update(@PathVariable Long id, @Valid @RequestBody PostDTO dto){
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}

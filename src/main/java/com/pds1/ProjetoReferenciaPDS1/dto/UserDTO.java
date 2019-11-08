@@ -24,26 +24,23 @@ public class UserDTO implements Serializable{
 	@Email(message = "invalid email")
 	private String email;
 	
-	@NotEmpty(message = "can't be empty")
-	@Length(min = 8,max = 20,message ="lentgh must be between 8 and 20")
-	private String phone;
 	
 	public UserDTO(){		
 	}
 
-	public UserDTO(Long id, String name, String email, String phone) {
+	public UserDTO(Long id, String name, String email) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
-		this.phone = phone;
+		
 	}
 	
 	public UserDTO(User entity){
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.email = entity.getEmail();
-		this.phone = entity.getPhone();
+		
 	}
 
 	public Long getId() {
@@ -68,18 +65,10 @@ public class UserDTO implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+	}	
 	
 	public User toEntity(){
-		return new User(id, name, email, phone, null);
+		return new User(id, name, email, null);
 	}
 	
 }
