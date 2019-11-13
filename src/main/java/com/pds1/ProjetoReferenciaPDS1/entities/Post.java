@@ -26,12 +26,14 @@ public class Post implements Serializable {
 	private String title;
 	private String body;	
 	
-	@OneToMany(mappedBy = "comment")	
+	@ManyToOne
+	@JoinColumn(name = "author_id")
+	private User author;
+	
+	@OneToMany(mappedBy = "post")	
 	private Set<Comment> comments = new HashSet<>();
 	
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	
 	
 	public Post() {		
 	}
@@ -45,12 +47,12 @@ public class Post implements Serializable {
 	}
 	
 	
-	public User getUser() {
-		return user;
+	public User getAuthor() {
+		return author;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 	
 	
@@ -115,5 +117,19 @@ public class Post implements Serializable {
 			return false;
 		return true;
 	}
+
+	public void addComments(Comment comment) {
+		comments.add(comment);
+	}
+	
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+	
+	
 
 }

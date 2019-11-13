@@ -3,14 +3,21 @@ package com.pds1.ProjetoReferenciaPDS1.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-
+@Entity
+@Table(name = "tb_comment")
 public class Comment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	
 	private String text;
 	private Instant moment;
@@ -31,8 +38,8 @@ public class Comment implements Serializable{
 	
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "author_id")
+	private User author;
 
 	public Long getId() {
 		return id;
@@ -81,7 +88,21 @@ public class Comment implements Serializable{
 		return true;
 	}
 
-	
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
 	
 	
 	

@@ -9,9 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.pds1.ProjetoReferenciaPDS1.entities.Comment;
 import com.pds1.ProjetoReferenciaPDS1.entities.Post;
 import com.pds1.ProjetoReferenciaPDS1.entities.Role;
 import com.pds1.ProjetoReferenciaPDS1.entities.User;
+import com.pds1.ProjetoReferenciaPDS1.repositories.CommentRepository;
 import com.pds1.ProjetoReferenciaPDS1.repositories.PostRepository;
 import com.pds1.ProjetoReferenciaPDS1.repositories.RoleRepository;
 import com.pds1.ProjetoReferenciaPDS1.repositories.UserRepository;
@@ -32,6 +34,9 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private PostRepository postRepository;
 	
+	@Autowired
+	private CommentRepository commentRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {	
 		
@@ -44,15 +49,37 @@ public class TestConfig implements CommandLineRunner {
 		Post p2 = new Post(null, Instant.now(), "Título do post numero 02", "Corpo do post numero 02, ihhi hih ih hi hi hih h ih ih Maria");
 		Post p3 = new Post(null, Instant.now(), "Título do post numero 03", "Corpo do post numero 03, ihhi hih ih hi hi hih h ih ih Alex");
 		
-		p1.setUser(u1);
-		p2.setUser(u1);
-		p3.setUser(u2);
+		p1.setAuthor(u1);
+		p2.setAuthor(u1);
+		p3.setAuthor(u2);				
 		
 		postRepository.saveAll(Arrays.asList(p1,p2,p3));
 		
+		u1.addPosts(p1);
+		u1.addPosts(p2);
+		u2.addPosts(p3);
 		
+		userRepository.saveAll(Arrays.asList(u1, u2));
 		
+		Comment c1 = new Comment(null, "Comentario do Post 01 Alex", Instant.now());
+		Comment c2 = new Comment(null, "Comentario do Post 02 Alex", Instant.now());
+		Comment c3 = new Comment(null, "Comentario do Post 03 Maria", Instant.now());
 		
+		c1.setPost(p1);
+		c2.setPost(p2);
+		c3.setPost(p3);
+		
+		c1.setAuthor(u2);
+		c2.setAuthor(u2);
+		c3.setAuthor(u1);
+		
+		commentRepository.saveAll(Arrays.asList(c1,c2,c3));
+		
+		p1.addComments(c1);
+		p2.addComments(c2);
+		p3.addComments(c3);
+		
+		postRepository.saveAll(Arrays.asList(p1,p2,p3));
 		
 		
 		u1.addPosts(p1);
