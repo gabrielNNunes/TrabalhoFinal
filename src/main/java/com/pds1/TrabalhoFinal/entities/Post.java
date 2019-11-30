@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +31,7 @@ public class Post implements Serializable {
 	@JoinColumn(name = "author_id")
 	private User author;
 	
-	@OneToMany(mappedBy = "post")	
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private Set<Comment> comments = new HashSet<>();
 	
 	
@@ -38,12 +39,13 @@ public class Post implements Serializable {
 	public Post() {		
 	}
 
-	public Post(Long id, Instant moment, String title, String body) {
+	public Post(Long id, Instant moment, String title, String body,User author) {
 		super();
 		this.id = id;
 		this.moment = moment;
 		this.title = title;
 		this.body = body;
+		this.author = author;
 	}
 	
 	

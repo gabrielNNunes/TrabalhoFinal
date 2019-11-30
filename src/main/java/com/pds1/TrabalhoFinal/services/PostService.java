@@ -1,7 +1,6 @@
 package com.pds1.TrabalhoFinal.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,6 +20,7 @@ import com.pds1.TrabalhoFinal.entities.Comment;
 import com.pds1.TrabalhoFinal.entities.Post;
 import com.pds1.TrabalhoFinal.entities.User;
 import com.pds1.TrabalhoFinal.repositories.PostRepository;
+import com.pds1.TrabalhoFinal.repositories.UserRepository;
 
 import services.exceptions.DatabaseException;
 import services.exceptions.ResourceNotFoundException;
@@ -33,6 +33,9 @@ public class PostService{
 	
 	@Autowired
 	private AuthService authService;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Transactional(readOnly = true)
 	public List<CommentDTO> findComments(Long id) {
@@ -47,15 +50,16 @@ public class PostService{
 		return list.stream().map(e -> new PostDTO(e)).collect(Collectors.toList());
 	}
 	
-	public PostDTO findById(Long id) {
-		authService.validateSelfOrAdmin(id);		
-		Optional<Post> obj = repository.findById(id);
-		Post entity = obj.orElseThrow(() -> new ResourceNotFoundException(id));
-		return new PostDTO(entity);
+	public List<PostDTO> findById(Long userId) {
+		User author = userRepository.getOne(userId);
+		List<Post> list = repository.findByAuthor(author);
+		return list.stream().map(e -> new PostDTO(e)).collect(Collectors.toList());
 	}
 	
-	public PostDTO insert(PostDTO dto) {
+	public PostDTO insert(PostDTO dto) {		
 		Post entity = dto.toEntity();		
+		User author = authService.authenticated();
+		entity.setAuthor(author);		
 		entity = repository.save(entity);
 		return new PostDTO(entity);
 	}
@@ -69,10 +73,10 @@ public class PostService{
 		}
 	}
 	@Transactional 
-	public PostDTO update(Long id,PostDTO dto) {
-		authService.validateSelfOrAdmin(id);
-		try {
+	public PostDTO update(Long id,PostDTO dto) {	
 		Post entity = repository.getOne(id);
+		authService.validateSelfOrAdmin(entity.getAuthor().getId());
+		try {		
 		updateData(entity,dto);
 		entity = repository.save(entity);
 		return new PostDTO(entity);
@@ -80,8 +84,7 @@ public class PostService{
 			throw new ResourceNotFoundException(id);
 		}
 	}
-	private void updateData(Post entity, PostDTO dto) {
-		entity.setId(dto.getId());
+	private void updateData(Post entity, PostDTO dto) {		
 		entity.setMoment(dto.getMoment());
 		entity.setTitle(dto.getTitle());
 		entity.setBody(dto.getBody());

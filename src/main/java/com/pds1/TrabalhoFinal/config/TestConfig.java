@@ -45,9 +45,9 @@ public class TestConfig implements CommandLineRunner {
 		
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		
-		Post p1 = new Post(null, Instant.now(), "Título do post numero 01", "Corpo do post numero 01, ihhi hih ih hi hi hih h ih ih Maria");
-		Post p2 = new Post(null, Instant.now(), "Título do post numero 02", "Corpo do post numero 02, ihhi hih ih hi hi hih h ih ih Maria");
-		Post p3 = new Post(null, Instant.now(), "Título do post numero 03", "Corpo do post numero 03, ihhi hih ih hi hi hih h ih ih Alex");
+		Post p1 = new Post(null, Instant.now(), "Título do post numero 01", "Corpo do post numero 01, ihhi hih ih hi hi hih h ih ih Maria",u1);
+		Post p2 = new Post(null, Instant.now(), "Título do post numero 02", "Corpo do post numero 02, ihhi hih ih hi hi hih h ih ih Maria",u1);
+		Post p3 = new Post(null, Instant.now(), "Título do post numero 03", "Corpo do post numero 03, ihhi hih ih hi hi hih h ih ih Alex",u2);
 		
 		p1.setAuthor(u1);
 		p2.setAuthor(u1);
@@ -61,9 +61,9 @@ public class TestConfig implements CommandLineRunner {
 		
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		
-		Comment c1 = new Comment(null, "Comentario do Post 01 Alex", Instant.now());
-		Comment c2 = new Comment(null, "Comentario do Post 02 Alex", Instant.now());
-		Comment c3 = new Comment(null, "Comentario do Post 03 Maria", Instant.now());
+		Comment c1 = new Comment(null, "Comentario do Post 01 Alex", Instant.now(),p1, u2);
+		Comment c2 = new Comment(null, "Comentario do Post 02 Alex", Instant.now(),p2, u2);
+		Comment c3 = new Comment(null, "Comentario do Post 03 Maria", Instant.now(),p3, u1);
 		
 		c1.setPost(p1);
 		c2.setPost(p2);

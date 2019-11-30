@@ -50,9 +50,9 @@ public class PostResourse {
 		
 	@GetMapping(value = "/user/{userId}")
 	@PreAuthorize("hasAnyRole('ADMIN', 'MEMBER')")
-	public ResponseEntity<PostDTO> findById(@PathVariable Long userId){
-		PostDTO dto = service.findById(userId);
-		return ResponseEntity.ok().body(dto);
+	public ResponseEntity<List<PostDTO>> findById(@PathVariable Long userId){
+		List<PostDTO> listDTO = service.findById(userId);
+		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	@GetMapping(value = "/{id}/coments")

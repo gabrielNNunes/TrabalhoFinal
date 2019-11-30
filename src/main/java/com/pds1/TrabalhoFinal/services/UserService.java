@@ -41,7 +41,6 @@ public class UserService implements UserDetailsService {
 		return list.stream().map(e -> new UserDTO(e)).collect(Collectors.toList());
 	}
 	public UserDTO findById(Long id) {
-		authService.validateSelfOrAdmin(id);
 		Optional<User> obj = repository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException(id));
 		return new UserDTO(entity);

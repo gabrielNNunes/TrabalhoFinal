@@ -25,11 +25,13 @@ public class Comment implements Serializable{
 	public Comment(){		
 	}
 
-	public Comment(Long id, String text, Instant moment) {
+	public Comment(Long id, String text, Instant moment,Post post,User author) {
 		super();
 		this.id = id;
 		this.text = text;
 		this.moment = moment;
+		this.post = post;
+		this.author = author;
 	}
 
 	@ManyToOne

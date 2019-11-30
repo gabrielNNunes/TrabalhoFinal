@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pds1.TrabalhoFinal.dto.CommentDTO;
 import com.pds1.TrabalhoFinal.entities.Comment;
+import com.pds1.TrabalhoFinal.entities.User;
 import com.pds1.TrabalhoFinal.repositories.CommentRepository;
 
 import services.exceptions.DatabaseException;
@@ -43,7 +44,9 @@ public class CommentService{
 	}
 	
 	public CommentDTO insert(CommentDTO dto) {
-		Comment entity = dto.toEntity();		
+		Comment entity = dto.toEntity();					
+		User author = authService.authenticated();
+		entity.setAuthor(author);
 		entity = repository.save(entity);
 		return new CommentDTO(entity);
 	}
@@ -58,9 +61,10 @@ public class CommentService{
 	}
 	@Transactional 
 	public CommentDTO update(Long id,CommentDTO dto) {
-		authService.validateSelfOrAdmin(id);
-		try {
 		Comment entity = repository.getOne(id);
+		authService.validateSelfOrAdmin(entity.getAuthor().getId());
+		try {
+		
 		updateData(entity,dto);
 		entity = repository.save(entity);
 		return new CommentDTO(entity);
@@ -68,8 +72,7 @@ public class CommentService{
 			throw new ResourceNotFoundException(id);
 		}
 	}
-	private void updateData(Comment entity, CommentDTO dto) {
-		entity.setId(dto.getId());
+	private void updateData(Comment entity, CommentDTO dto) {		
 		entity.setText(dto.getText());
 		entity.setMoment(dto.getMoment());
 		
