@@ -6,4 +6,5 @@ import com.pds1.TrabalhoFinal.entities.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long>{
 
+	Role findByAuthority(String authority);
 }

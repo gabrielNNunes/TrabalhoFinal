@@ -1,5 +1,6 @@
 package com.pds1.TrabalhoFinal.services;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,7 +75,7 @@ public class CommentService{
 	}
 	private void updateData(Comment entity, CommentDTO dto) {		
 		entity.setText(dto.getText());
-		entity.setMoment(dto.getMoment());
+		entity.setMoment(Instant.now());
 		
 	}
 	

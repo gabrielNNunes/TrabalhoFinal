@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pds1.TrabalhoFinal.dto.UserDTO;
 import com.pds1.TrabalhoFinal.dto.UserInsertDTO;
+import com.pds1.TrabalhoFinal.entities.Role;
 import com.pds1.TrabalhoFinal.entities.User;
+import com.pds1.TrabalhoFinal.repositories.RoleRepository;
 import com.pds1.TrabalhoFinal.repositories.UserRepository;
 
 import services.exceptions.DatabaseException;
@@ -32,6 +34,9 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@Autowired
 	private AuthService authService;
@@ -49,6 +54,9 @@ public class UserService implements UserDetailsService {
 	public UserDTO insert(UserInsertDTO dto) {
 		User entity = dto.toEntity();
 		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+		entity = repository.save(entity);
+		Role role = roleRepository.findByAuthority("ROLE_MEMBER");
+		entity.getRoles().add(role);
 		entity = repository.save(entity);
 		return new UserDTO(entity);
 	}

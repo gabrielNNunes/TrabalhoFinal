@@ -99,12 +99,6 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 	
-	
-	
-	public void addRole(Role role){
-		
-	}
-	
 	public Set<Role> getRoles(){
 		return roles;
 	}

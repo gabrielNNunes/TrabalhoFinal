@@ -1,5 +1,6 @@
 package com.pds1.TrabalhoFinal.services;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -85,7 +86,7 @@ public class PostService{
 		}
 	}
 	private void updateData(Post entity, PostDTO dto) {		
-		entity.setMoment(dto.getMoment());
+		entity.setMoment(Instant.now());
 		entity.setTitle(dto.getTitle());
 		entity.setBody(dto.getBody());
 	}
